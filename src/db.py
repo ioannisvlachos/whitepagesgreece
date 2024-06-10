@@ -69,16 +69,15 @@ def create_database():
 def insert_data_to_db(conn, json_files: list):
     cur = conn.cursor()
     for r in range(len(json_files)):
-        # try:
-        print(f'[*] Inserting file {r+1}/{len(json_files)}..')
-        subscriber = getSubsAllData(json_files[r])
-        subs_data = json.dumps(subscriber, ensure_ascii = False)
-        for phone in subscriber['phones']:
-            try:
+        try:
+            print(f'[*] Inserting file {r+1}/{len(json_files)}..')
+            subscriber = getSubsAllData(json_files[r])
+            subs_data = json.dumps(subscriber, ensure_ascii = False)
+            for phone in subscriber['phones']:
                 # Inserting each phone number along with the rest of the subscriber data
                 cur.execute("INSERT INTO phone_num (number, data) VALUES (%s, %s::jsonb)", (phone['number'], subs_data))
-            except Exception as e:
-                print(f'Error {e} in file {json_files[r]}')
+        except Exception as e:
+            print(f'Error {e} in file {json_files[r]}')
     conn.commit()
     cur.close()
 
