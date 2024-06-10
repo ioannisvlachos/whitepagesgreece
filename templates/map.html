@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        iframe {
+            display: block;
+            border: none;
+            width: 90%;
+            height: 600px; /* Fixed height for the iframe */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .table-container {
+            width: 90%;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        th {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>WhitePagesGr</h1>
+    <iframe src="/static/index.html"></iframe>
+    <div class="table-container">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <a href="/">Back to search</a>
+
+    <script>
+        // Data passed from the FastAPI endpoint
+        const dataString = `{{ data | safe }}`;
+
+        // Parse the data string into a JavaScript object
+        const dataList = JSON.parse(dataString);
+
+        // Function to create table rows
+        function populateTable(dataList) {
+            const tableBody = document.querySelector("#data-table tbody");
+            dataList.forEach(item => {
+                const number = item[0];
+                const name = item[1].name.str_name;
+                const address = item[1].address.str_add;
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${name}</td>
+                    <td>${number}</td>
+                    <td>${address}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Populate the table on page load
+        populateTable(dataList);
+    </script>
+</body>
+</html>

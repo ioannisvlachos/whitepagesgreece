@@ -1,0 +1,79 @@
+{
+    "version": "v1",
+    "config": {
+        "visState": {
+            "layers": [
+                {
+                    "id": "point_layer",
+                    "type": "point",
+                    "config": {
+                        "dataId": "info",
+                        "label": "Phones",
+                        "color": [0, 128, 255],
+                        "columns": {
+                            "lat": "latitude",
+                            "lng": "longitude",
+                            "altitude": "None"
+                        },
+                        "isVisible": true,
+                        "visConfig": {},
+                        "textLabel": {}
+                    },
+                    "visualChannels": {
+                        "colorField": "None",
+                        "colorScale": "quantile",
+                        "strokeColorField": "None",
+                        "strokeColorScale": "quantile",
+                        "sizeField": "None",
+                        "sizeScale": "linear",
+                        "heightField": "None",
+                        "heightScale": "linear",
+                        "radiusField": "None",
+                        "radiusScale": "linear"
+                    }
+                }
+            ],
+            "interactionConfig": {
+                "tooltip": {
+                    "fieldsToShow": {
+                        "info": [
+
+                            { "phone": "phone", "format": "None" },
+                            { "address": "address", "format": "None" }
+
+                        ]
+                    },
+                    "compareMode": false,
+                    "compareType": "absolute",
+                    "enabled": true
+                }
+            }
+        },
+        "mapState": {
+            "bearing": 0,
+            "dragRotate": false,  
+            "latitude": 37.97,
+            "longitude": 23.72,
+            "pitch": 0,  
+            "zoom": 5.740491857794806,
+            "isSplit": true
+        },
+        "mapStyle": {
+            "styleType": "dark",
+            "topLayerGroups": {},
+            "visibleLayerGroups": {
+                "label": true,
+                "road": true,
+                "border": false,
+                "building": true,
+                "water": true,
+                "land": true
+            },
+            "threeDBuildingColor": [9.665468314072013, 17.18305478057247, 31.1442867897876],
+            "mapStyles": {}
+        },
+        "mapStyle": {
+            "styleType": "dark"
+        }
+    }
+}

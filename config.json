@@ -1,0 +1,9 @@
+{
+  "database": {
+    "name": "whitepages",
+    "user": "debilap",
+    "host": "localhost",
+    "password": "1955",
+    "port": "5432"
+  }
+}

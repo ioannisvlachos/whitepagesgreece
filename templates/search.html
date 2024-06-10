@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        label, input, button {
+            display: block;
+            width: calc(100% - 40px);
+            margin: 0 auto 15px auto;
+        }
+        label {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background-color: #4ca1af;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3a7a89;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const phoneNumber = document.getElementById("phone").value;
+            const name = document.getElementById("name").value;
+            const address = document.getElementById("address").value;
+            if (!phoneNumber && !name && !address) {
+                alert("Please provide at least one search criterion.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <form action="/search" method="post" onsubmit="return validateForm()">
+        <h1>WhitePagesGr</h1>
+        <label for="phone_number">Insert phone number</label>
+        <input type="text" id="phone" name="phone">
+        <label for="name">Insert name</label>
+        <input type="text" id="name" name="name">
+        <label for="address">Insert address</label>
+        <input type="text" id="address" name="address">
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
