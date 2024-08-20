@@ -67,19 +67,19 @@ def create_database():
 
 
 def insert_data_to_db(conn, json_files: list):
-    cur = conn.cursor()
-    for r in range(len(json_files)):
-        try:
-            print(f'[*] Inserting file {r+1}/{len(json_files)}..')
-            subscriber = getSubsAllData(json_files[r])
-            subs_data = json.dumps(subscriber, ensure_ascii = False)
-            for phone in subscriber['phones']:
-                # Inserting each phone number along with the rest of the subscriber data
-                cur.execute("INSERT INTO phone_num (number, data) VALUES (%s, %s::jsonb)", (phone['number'], subs_data))
-        except Exception as e:
-            print(f'Error {e} in file {json_files[r]}')
-    conn.commit()
-    cur.close()
+	cur = conn.cursor()
+	for r in range(len(json_files)):
+		try:
+			print(f'[*] Inserting file {r+1}/{len(json_files)}..name: {json_files[r]}')
+			subscriber = getSubsAllData(json_files[r])
+			subs_data = json.dumps(subscriber, ensure_ascii = False)
+			for phone in subscriber['phones']:
+            	# Inserting each phone number along with the rest of the subscriber data
+				cur.execute("INSERT INTO phone_num (number, data) VALUES (%s, %s::jsonb)", (phone['number'], subs_data))
+		except Exception as e:
+			print(f'Error {e} in file {json_files[r]}')
+	conn.commit()
+	cur.close()
 
 
 def getFromDb(queryItem):
@@ -98,11 +98,17 @@ def getFromDb(queryItem):
         conditions.append("NUMBER LIKE %s")
         params.append(f"%{queryItem.phone}%")
     if queryItem.name:
-        conditions.append("data->'name'->>'str_name' iLIKE %s")
-        params.append(f"%{queryItem.name}%")
+        # Split the name into individual words
+        name_components = queryItem.name.split()
+        for component in name_components:
+            conditions.append("data->'name'->>'str_name' iLIKE %s")
+            params.append(f"%{component}%")
     if queryItem.address:
-        conditions.append("data->'address'->>'str_add' iLIKE %s")
-        params.append(f"%{queryItem.address}%")
+        # Split the address into individual words
+        address_components = queryItem.address.split()
+        for component in address_components:
+            conditions.append("data->'address'->>'str_add' iLIKE %s")
+            params.append(f"%{component}%")
 
     query += " AND ".join(conditions)
     cur = conn.cursor()

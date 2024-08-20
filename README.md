@@ -59,6 +59,9 @@ Command-Line Arguments
     -t or --truncate-table: Delete/Truncate all data in database.
     -d or --drop-database: Drop database.
     -i or --insert-only: Insert downloaded data from local folder wp_db/ to database.
+    -u or --update-db: Manually updates db.
+    -a or --auto-update: Auto-update the database every hour.
+
   ```
 
 
@@ -106,6 +109,15 @@ whitepages-fastapi/
 ├── requirements.txt
 └── README.md
 ```
+## Changelog
+
+### v.1.0.1
+- Added update/auto-update feature
+- Fixed search parameters
+
+### v.1.0.0
+- Initial commit
+
 
 ## Disclaimer
 The phone data are public and are maintained by greek service providers in public phonebooks, after receiving approval of their subscribers, in accordance with article 6 of Law 3471/2006, article 3 of Law 3783/2009 and Law 4624/19.

@@ -32,7 +32,7 @@ def get_sitemap():
         re_urls = re.compile('<loc>(.*)</loc>').findall(r.text)
         for url in re_urls:
             exported_sitemap.append({'id': re.search('https://www.11888.gr/search/white_pages/(.*)/', url).group(1), 'url': url})
-    print(f'[*] Completed downloaded sitemap. Contacts found: {len(exported_sitemap)}')
+    print(f'[*] Completed downloading sitemap. Contacts: {len(exported_sitemap)}')
     save_sitemap(exported_sitemap)
     return exported_sitemap
 
@@ -54,7 +54,7 @@ def key_None(value):
 def get_info(ad):
     r = requests.get(ad)
     d = re.search(js_reg, r.text)
-    ad_num = re.search('https://www.11888.gr/search/white_pages/(.*)/', ad).group(1)
+    ad_num = re.search('https://www.11888.gr/search/white_pages/(.*)', ad).group(1)
     js = json.loads(d.group(1)[:-3].encode("utf-8").decode("unicode-escape"))
     try:
         js['name'].update({'str_name':' '.join([key_None(js['name'].get('last','')), key_None(js['name'].get('middle','')), key_None(js['name'].get('first',''))])})
@@ -78,15 +78,18 @@ def save_json(jsonFile):
         d = json.dumps(jsonFile, ensure_ascii=False, indent=2)
         ex.write(d)
 
+def to_be_downloaded(old_sitemap, new_sitemap):
+    old = [int(x['id']) for x in old_sitemap]
+    new = [int(x['id']) for x in new_sitemap]
+    diff = list(set(new)-set(old))
+    for_download = [{'id':str(x), 'url':'https://www.11888.gr/search/white_pages/' + str(x)} for x in diff]
+    return for_download
+
 def split_list(lst, chunk_size):
     return [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
 
-def download_data(sample=False):
+def download_data(js, sample=False):
     counter = 1
-    if os.path.isfile('sitemap.json'):
-        js = load_sitemap()
-    else:
-        js = get_sitemap()    
     if sample == False:
         list_to_be_downloaded = split_list(js, 1000)
     else:
@@ -100,7 +103,8 @@ def download_data(sample=False):
         for future in as_completed(futures):
             try:
                 save_json(future.result())
-            except Exception:
+            except Exception as e:
+                print(f'[--] Error {e} saving file')
                 continue
         counter += 1
 
